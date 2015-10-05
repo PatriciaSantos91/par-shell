@@ -22,8 +22,7 @@ Return value:
  The number of arguments that were read, or -1 if some error occurred.
 */
 
-int readLineArguments(char **argVector, int vectorSize)
-{
+ int readLineArguments(char **argVector, int vectorSize){
   int numtokens = 0;
   char *s = " \n\t";
 
@@ -39,10 +38,10 @@ int readLineArguments(char **argVector, int vectorSize)
   if (getline(&str, &size, stdin) < 0) {
     return -1;
   }
-   
+
   /* get the first token */
   token = strtok(str, s);
-   
+
   /* walk through other tokens */
   while( numtokens < vectorSize-1 && token != NULL ) {
     argVector[numtokens] = token;
@@ -50,11 +49,11 @@ int readLineArguments(char **argVector, int vectorSize)
     
     token = strtok(NULL, s);
   }
-   
+
   for (i = numtokens; i<vectorSize; i++) {
     argVector[i] = NULL;
   }
-   
+
   return numtokens;
 }
 
@@ -63,13 +62,13 @@ int readLineArguments(char **argVector, int vectorSize)
  printcmds: Prints all the commands of the program
  *********************************************************/
 
-void printcmds(int debug){
-    
-    printf("----------------par-shell----------------\n");
-    printf("----------- List of commands: -----------\n");
-    printf("--- <pathname> <arg1> ... <arg5>      ---\n");
-    printf("--- exit                              ---\n");
-    printf("--- clear                             ---\n");
-    printf("-----------------------------------------\n");
-    return;
+ void printcmds(int debug){
+
+  printf("----------------par-shell----------------\n");
+  printf("----------- List of commands: -----------\n");
+  printf("--- <pathname> <arg1> ... <arg5>      ---\n");
+  printf("--- exit                              ---\n");
+  printf("--- clear                             ---\n");
+  printf("-----------------------------------------\n");
+  return;
 }

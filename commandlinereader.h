@@ -3,8 +3,8 @@
 // Sistemas Operativos, DEI/IST/ULisboa 2015-16
 */
 
-#ifndef COMMANDLINEREADER_H
-#define COMMANDLINEREADER_H
+#ifndef _COMMANDLINEREADER_H_
+#define _COMMANDLINEREADER_H_
 
 /* 
 Reads up to 'vectorSize' space-separated arguments from the standard input

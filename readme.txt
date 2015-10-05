@@ -11,3 +11,7 @@ v1
 ====================
 -Ficheiros base do projecto
 -Inicio da função main (já lê input)
+
+v2
+====================
+-alguns problemas no list.h (as vezes nao reconhece as funções)

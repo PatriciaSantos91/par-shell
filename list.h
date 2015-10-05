@@ -1,23 +1,18 @@
-#ifndef _LIST_
-#define _LIST_
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <time.h>
-
+#ifndef _LIST_H_
+#define _LIST_H_
 
 /* lst_iitem - each element of the list points to the next element */
 typedef struct lst_iitem {
-   int pid;
-   time_t starttime;
-   time_t endtime;
-   struct lst_iitem *next;
+  int pid;
+  time_t starttime;
+  time_t endtime;
+  struct lst_iitem *next;
 } lst_iitem_t;
 
 /* list_t */
 typedef struct {
-   lst_iitem_t * first;
-   int n_sons;												// Stores the number of son-processes
+  lst_iitem_t * first;
+  int n_sons;												// Stores the number of son-processes
 } list_t;
 
 
