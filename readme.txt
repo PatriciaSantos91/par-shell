@@ -15,3 +15,8 @@ v1
 v2
 ====================
 -alguns problemas no list.h (as vezes nao reconhece as funções)
+
+v2.1
+====================
+-list.h e Makefile corrigidos
+-On par-shell.c -> execv corrigido.
