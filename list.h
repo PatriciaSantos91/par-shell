@@ -2,17 +2,20 @@
 #define _LIST_H_
 
 /* lst_iitem - each element of the list points to the next element */
+// ret_int -> stores the int value returned by exit()
 typedef struct lst_iitem {
   int pid;
+  int ret_int;
   time_t starttime;
   time_t endtime;
   struct lst_iitem *next;
 } lst_iitem_t;
 
 /* list_t */
+// r_ sons: Stores the number of sons currently running
 typedef struct {
   lst_iitem_t * first;
-  int r_sons;												// Stores the number of son-processes
+  int r_sons;												
 } list_t;
 
 
@@ -27,7 +30,7 @@ void lst_destroy(list_t *);
 void insert_new_process(list_t *list, int pid, time_t starttime);
 
 /* lst_remove - remove first item of value 'value' from list 'list' */
-void update_terminated_process(list_t *list, int pid, time_t endtime);
+void update_terminated_process(list_t *list, int pid, time_t endtime, int ret_int);
 
 /* lst_print - print the content of list 'list' to standard output */
 void lst_print(list_t *list);

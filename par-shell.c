@@ -14,14 +14,29 @@
 
 #define MAXARG 6
 
+// Handles SIGCHLD sent by a process child, reaping him.
 void handle_sigchld(int signum){
+  // Reset of handler
+  if (signal(SIGCHLD,handle_sigchld) == SIG_ERR){
+    perror("Error on setting SIGCHLD handler");
+  }
 
+  int terminated_pid = 0, status = 0, ret_int = 0;
+  time_t setTime;
+/*
+  terminated_pid = wait(&status);
+  time(&setTime);
+  if (WIFEXITED(status)){
+    ret_int = WEXITSTATUS(status);
+    update_terminated_process(plist, terminated_pid, setTime, ret_int);
+  }
+  */
 }
 
 int main(int argc, char *argv[]){
   char ** input;
   int loop = 1, cmd = 0, readVal = 0;
-  int pid = 0, terminated_pid = 0, state = 0;
+  int pid = 0, terminated_pid = 0, status = 0, ret_int = 0;
   list_t *plist = lst_new();
   time_t setTime;
   extern int errno;
@@ -30,6 +45,11 @@ int main(int argc, char *argv[]){
   if (input == NULL){
     fprintf(stderr,"Error on malloc: %s\n",strerror(errno));
     exit(-1);
+  }
+
+ // Sets the SIGCHLD handler
+  if (signal(SIGCHLD,handle_sigchld) == SIG_ERR){
+    perror("Error on setting SIGCHLD handler");
   }
 
   while (loop){
@@ -42,21 +62,23 @@ int main(int argc, char *argv[]){
 
     if (readVal > 0){
       if (strcmp(input[0],"clear") == 0){                                      // Clear cmd
-        system ( "clear" );
         cmd = 1;
+        system ( "clear" );
       }
 
       if (strcmp(input[0],"exit") == 0){                                      // Exit cmd
+        cmd = 1;
         while(plist->r_sons > 0){
-          terminated_pid = wait(&state);
-          if (WIFEXITED(state)){
-            time(&setTime);
-            update_terminated_process(plist, terminated_pid, setTime);
+          terminated_pid = wait(&status);
+          time(&setTime);
+          if (WIFEXITED(status)){
+            ret_int = WEXITSTATUS(status);
+            update_terminated_process(plist, terminated_pid, setTime, ret_int);
           }
-        }
-        printf("Exiting par-shell..\n");
         loop = 0;
+        }
       }
+
       if (!cmd){                                                  // Only runs if no cmd was invoked
         printf("Inicializing process on file %s\n", input[0]);
         pid = fork();
@@ -82,7 +104,9 @@ int main(int argc, char *argv[]){
 
   }   //loop
 
+  lst_print(plist);
   lst_destroy(plist);
   free(input);
+  printf("Exiting par-shell..\n");
   exit(7);
 }

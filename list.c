@@ -13,7 +13,7 @@ list_t* lst_new(){
   list_t *list;
   list = (list_t*) malloc(sizeof(list_t));
   if (list == NULL){
-    fprintf(stdout,"Error on malloc: %s\n",strerror(errno));
+    fprintf(stderr,"Error on malloc: %s\n",strerror(errno));
     exit(-2);
   }
   list->first = NULL;
@@ -39,7 +39,7 @@ void insert_new_process(list_t *list, int pid, time_t starttime){
   lst_iitem_t *item;
   item = (lst_iitem_t *) malloc (sizeof(lst_iitem_t));
   if (item == NULL){
-    fprintf(stdout,"Error on malloc: %s\n",strerror(errno));
+    fprintf(stderr,"Error on malloc: %s\n",strerror(errno));
     exit(-2);
   }
   item->pid = pid;
@@ -51,7 +51,7 @@ void insert_new_process(list_t *list, int pid, time_t starttime){
 }
 
 
-void update_terminated_process(list_t *list, int pid, time_t endtime){
+void update_terminated_process(list_t *list, int pid, time_t endtime, int ret_int){
 
   lst_iitem_t * aux;
   aux = list->first;
@@ -60,6 +60,7 @@ void update_terminated_process(list_t *list, int pid, time_t endtime){
   }
 
   aux->endtime = endtime;
+  aux->ret_int = ret_int;
   list->r_sons--;
   printf("teminated process with pid: %d\n", pid);
 }
@@ -67,11 +68,12 @@ void update_terminated_process(list_t *list, int pid, time_t endtime){
 
 void lst_print(list_t *list){	
   lst_iitem_t *item;
-  printf("Process list with start and end time:\n");
+  printf("Process list with start, end time and return value:\n");
   item = list->first;
   while (item != NULL){
     printf("%d\t%s", item->pid, ctime(&(item->starttime)));
     printf("\t%s", ctime(&(item->endtime)));
+    printf("\tReturn value:%d\n",item->ret_int);
     item = item->next;
   }
   printf("-- end of list.\n");

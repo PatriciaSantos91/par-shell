@@ -20,3 +20,5 @@ v2.1
 ====================
 -list.h e Makefile corrigidos
 -On par-shell.c -> execv corrigido.
+-Macros WIFEXITED e WEXITSTATUS implementadas
+-Correcao de alguns prints.
