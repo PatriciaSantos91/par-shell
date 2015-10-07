@@ -1,18 +1,14 @@
-CC=gcc
-TARGET = par-shell
-CFLAGS= -c -g -ansi -Wall
+par-shell: list.o commandlinereader.o par-shell.o
+	gcc -o par-shell list.o commandlinereader.o par-shell.o
 
-SRCFILES = par-shell.c list.c commandlinereader.c
-INCFILES = list.h commandlinereader.h
-OBJFILES = par-shell.o list.o commandlinereader.o
+list.o: list.c list.h
+	gcc -Wall -g -c list.c
 
-default: $(TARGET)
+commandlinereader.o: commandlinereader.c commandlinereader.h
+	gcc -Wall -g -c commandlinereader.c
 
-$(TARGET): $(OBJFILES)
-	$(CC) -o $(TARGET) $(OBJFILES)
+par-shell.o: par-shell.c commandlinereader.h
+	gcc -Wall -g -c par-shell.c
 
-clean:
-	rm -f $(TARGET) $(OBJFILES) core.* #*
-
-%.o: %.c
-	$(CC) -c $< -o $@
+clean: 
+	rm -f *.o par-shell

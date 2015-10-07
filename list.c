@@ -1,20 +1,23 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <errno.h>
+#include <string.h>
 
 #include "list.h"
 
 
 
 list_t* lst_new(){
+  extern int errno;
   list_t *list;
   list = (list_t*) malloc(sizeof(list_t));
-  if (list == NULL) {
-    printf("No memory avaiable for malloc.\n");
+  if (list == NULL){
+    fprintf(stdout,"Error on malloc: %s\n",strerror(errno));
     exit(-2);
   }
   list->first = NULL;
-  list->n_sons = 0;
+  list->r_sons = 0;
   return list;
 }
 
@@ -36,7 +39,7 @@ void insert_new_process(list_t *list, int pid, time_t starttime){
   lst_iitem_t *item;
   item = (lst_iitem_t *) malloc (sizeof(lst_iitem_t));
   if (item == NULL){
-    printf("No memory avaiable for malloc.\n");
+    fprintf(stdout,"Error on malloc: %s\n",strerror(errno));
     exit(-2);
   }
   item->pid = pid;
@@ -44,7 +47,7 @@ void insert_new_process(list_t *list, int pid, time_t starttime){
   item->endtime = 0;
   item->next = list->first;
   list->first = item;
-  list->n_sons++;
+  list->r_sons++;
 }
 
 
@@ -57,7 +60,7 @@ void update_terminated_process(list_t *list, int pid, time_t endtime){
   }
 
   aux->endtime = endtime;
-  list->n_sons--;
+  list->r_sons--;
   printf("teminated process with pid: %d\n", pid);
 }
 

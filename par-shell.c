@@ -6,6 +6,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <signal.h>
 
 #include "list.h"
 #include "commandlinereader.h"
@@ -13,7 +14,9 @@
 
 #define MAXARG 6
 
-// pathname -> /home/garra/Desktop/SO/proj
+void handle_sigchld(int signum){
+
+}
 
 int main(int argc, char *argv[]){
   char ** input;
@@ -25,15 +28,15 @@ int main(int argc, char *argv[]){
 
   input = (char **) malloc(sizeof(char*)*(MAXARG));
   if (input == NULL){
-    printf("Error on malloc: %s\n",strerror(errno));
-    exit(3);
+    fprintf(stderr,"Error on malloc: %s\n",strerror(errno));
+    exit(-1);
   }
 
   while (loop){
     cmd = 0;
     printcmds(0);
-    readVal = readLineArguments(input,MAXARG);
 
+    readVal = readLineArguments(input,MAXARG);
     if (readVal == -1)                                                        // Error on readLineArguments
       fprintf(stderr, "Error on readLineArguments: %s\n",strerror(errno));
 
@@ -44,7 +47,7 @@ int main(int argc, char *argv[]){
       }
 
       if (strcmp(input[0],"exit") == 0){                                      // Exit cmd
-        while(plist->n_sons > 0){
+        while(plist->r_sons > 0){
           terminated_pid = wait(&state);
           if (WIFEXITED(state)){
             time(&setTime);
@@ -67,10 +70,10 @@ int main(int argc, char *argv[]){
         }
 
         if (pid == 0){
-        	execv(input[0], &input[1]);      //????????
+        	execv(input[0], input);
           // New program in charge, the code below runs in case an error ocurred with execv.
           fprintf(stderr,"Error on execv: %s\n",strerror(errno));
-          exit(6);
+          exit(-1);
         }
 
       }
@@ -80,5 +83,6 @@ int main(int argc, char *argv[]){
   }   //loop
 
   lst_destroy(plist);
+  free(input);
   exit(7);
 }

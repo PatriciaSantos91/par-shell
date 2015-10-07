@@ -12,7 +12,7 @@ typedef struct lst_iitem {
 /* list_t */
 typedef struct {
   lst_iitem_t * first;
-  int n_sons;												// Stores the number of son-processes
+  int r_sons;												// Stores the number of son-processes
 } list_t;
 
 
